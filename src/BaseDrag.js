@@ -183,6 +183,7 @@ Garnish.BaseDrag = Garnish.Base.extend(
 
                 // Add the listener
                 this.addListener(item, 'mousedown', '_handleMouseDown');
+                this.addListener(item, 'touchstart', '_handleMouseDown');
             }
 
             this.$items = this.$items.add(items);
@@ -267,8 +268,12 @@ Garnish.BaseDrag = Garnish.Base.extend(
          * Handle Mouse Down
          */
         _handleMouseDown: function(ev) {
-            // Ignore right clicks
-            if (ev.which !== Garnish.PRIMARY_CLICK) {
+            if (ev.originalEvent instanceof TouchEvent) {
+                //Set pageX and pageY from touch event
+                ev.pageX = ev.originalEvent.touches[0].pageX;
+                ev.pageY = ev.originalEvent.touches[0].pageY;
+            } else if (ev.which !== Garnish.PRIMARY_CLICK) {
+                // Ignore right clicks
                 return;
             }
 
@@ -317,6 +322,8 @@ Garnish.BaseDrag = Garnish.Base.extend(
             // Listen for mousemove, mouseup
             this.addListener(Garnish.$doc, 'mousemove', '_handleMouseMove');
             this.addListener(Garnish.$doc, 'mouseup', '_handleMouseUp');
+            this.addListener(Garnish.$doc, 'touchmove', '_handleMouseMove');
+            this.addListener(Garnish.$doc, 'touchend', '_handleMouseUp');
         },
 
         _getItemHandle: function(item) {
@@ -341,7 +348,13 @@ Garnish.BaseDrag = Garnish.Base.extend(
          * Handle Mouse Move
          */
         _handleMouseMove: function(ev) {
-            ev.preventDefault();
+            if (ev.originalEvent instanceof TouchEvent) {
+                //Set pageX and pageY from touch event
+                ev.pageX = ev.originalEvent.touches[0].pageX;
+                ev.pageY = ev.originalEvent.touches[0].pageY;
+            } else {
+                ev.preventDefault();
+            }
 
             this.realMouseX = ev.pageX;
             this.realMouseY = ev.pageY;

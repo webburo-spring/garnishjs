@@ -24,7 +24,6 @@
     "browserify": "^13.1.0",
     "browserify-istanbul": "^0.2.1",
     "coveralls": "^2.11.12",
-    "gulp": "^3.9.1",
     "gulp-bower": "0.0.13",
     "gulp-concat": "^2.6.0",
     "gulp-insert": "^0.5.0",
@@ -48,6 +47,8 @@
     "watchify": "^3.7.0",
     "yargs": "^4.2.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "gulp": "^3.9.1"
+  },
   "version": "0.1.37"
 }
